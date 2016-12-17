@@ -4,7 +4,7 @@ window.onload = function()
 	var alert = document.getElementById("alert");
 	
 	var policeProbability = 20;
-	var civProbability = 10;
+	var civProbability = 20;
 	
 	var pause = 0;
 	
@@ -25,6 +25,12 @@ window.onload = function()
 				// police event triggered
 				policeTrigger();
 			}
+			else {
+				var roll = Math.random() * 100;
+				if (roll < civProbability) {
+					civTrigger();
+				}
+			}
 		}
 	}, tick);
 	
@@ -32,6 +38,13 @@ window.onload = function()
 	function policeTrigger() {
 		alert.style.visibility = "visible";
 		alert.innerHTML = "POLICE!";
+		
+		pause = 1;
+	}
+	
+	function civTrigger() {
+		alert.style.visibility = "visible";
+		alert.innerHTML = "CIVILLIAN!";
 		
 		pause = 1;
 	}
