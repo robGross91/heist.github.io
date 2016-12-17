@@ -3,8 +3,15 @@ window.onload = function()
     var globalClock = document.getElementById("clock");
 	var alert = document.getElementById("alert");
 	
-	var policeProbability = 20;
-	var civProbability = 40;
+	var policeProbability = 15;
+	var civProbability = 20;
+	
+	// these measure the last time a police or civ alert happened
+	var lastPolice = -1000;
+	var lastCiv = -1000;
+	
+	var policeCooldown = 5;
+	var civCooldown = 5;
 	
 	var pause = 0;
 	
@@ -21,13 +28,13 @@ window.onload = function()
 			// check if alert will occur:
 			var policeRoll = Math.random() * 100;
 			
-			if (policeRoll < policeProbability) {
+			if ((policeRoll < policeProbability) && (parseInt(globalClock.innerHTML) > (lastPolice + policeCooldown))) {
 				// police event triggered
 				policeTrigger();
 			}
 			else {
 				var civRoll = Math.random() * 100;
-				if (civRoll < civProbability) {
+				if ((civRoll < civProbability) && (parseInt(globalClock.innerHTML) > (lastCiv + civCooldown))) {
 					civTrigger();
 				}
 			}
@@ -39,12 +46,16 @@ window.onload = function()
 		alert.style.visibility = "visible";
 		alert.innerHTML = "POLICE!";
 		
+		lastPolice = parseInt(globalClock.innerHTML)
+		
 		pause = 1;
 	}
 	
 	function civTrigger() {
 		alert.style.visibility = "visible";
-		alert.innerHTML = "CIVILLIAN!";
+		alert.innerHTML = "CIVILIAN!";
+		
+		lastCiv = parseInt(globalClock.innerHTML);
 		
 		pause = 1;
 	}
