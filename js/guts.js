@@ -1,6 +1,6 @@
 window.onload = function()
 {
-    var globalClock = document.getElementById("clock");
+    	var globalClock = document.getElementById("clock");
 	var alert = document.getElementById("alert");
 	
 	var policeProbability = 15;
@@ -10,10 +10,20 @@ window.onload = function()
 	var lastPolice = -1000;
 	var lastCiv = -1000;
 	
+	// cooldown clock for alerts
 	var policeCooldown = 5;
 	var civCooldown = 5;
 	
+	// check if game is currently paused
 	var pause = 0;
+	
+	// alertPhase affects frequency of police alerts
+	var alertPhase = document.getElementById("alertPhase");
+	// these three variables affect alertPhase timing
+	var alert2Time = 10;
+	var alert3Time = 20;
+	var alert4Time = 30;
+	var alertPhaseSwitches = [alert2Time, alert3Time, alert4Time];
 	
 	alert.style.visibility = "hidden";
 	
@@ -28,7 +38,13 @@ window.onload = function()
 			// check if alert will occur:
 			var policeRoll = Math.random() * 100;
 			
-			if ((policeRoll < policeProbability) && (parseInt(globalClock.innerHTML) > (lastPolice + policeCooldown))) {
+			// check if alert phase is switching:
+			if (parseInt(globalClock.innerHTML) == alertPhaseSwitches[alertPhase]) {
+				alertPhase.innerHTML = parseInt(alertPhase.innerHTML) + 1;
+				policeProbability = policeProbability * 1.5;
+				policeTrigger();
+			}
+			else if ((policeRoll < (policeProbability)) && (parseInt(globalClock.innerHTML) > (lastPolice + policeCooldown))) {
 				// police event triggered
 				policeTrigger();
 			}
