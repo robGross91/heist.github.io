@@ -4,7 +4,7 @@ window.onload = function()
 	var alert = document.getElementById("alert");
 	
 	var policeProbability = 20;
-	var civProbability = 20;
+	var civProbability = 40;
 	
 	var pause = 0;
 	
@@ -19,15 +19,15 @@ window.onload = function()
 			globalClock.innerHTML = parseInt(globalClock.innerHTML) + 1;
 			
 			// check if alert will occur:
-			var roll = Math.random() * 100;
+			var policeRoll = Math.random() * 100;
 			
-			if (roll < policeProbability) {
+			if (policeRoll < policeProbability) {
 				// police event triggered
 				policeTrigger();
 			}
 			else {
-				var roll = Math.random() * 100;
-				if (roll < civProbability) {
+				var civRoll = Math.random() * 100;
+				if (civRoll < civProbability) {
 					civTrigger();
 				}
 			}
