@@ -39,7 +39,7 @@ window.onload = function()
 			var policeRoll = Math.random() * 100;
 			
 			// check if alert phase is switching:
-			if (parseInt(globalClock.innerHTML) == alertPhaseSwitches[parseInt(alertPhase.innerHTML)]) {
+			if (parseInt(globalClock.innerHTML) == alertPhaseSwitches[parseInt(alertPhase.innerHTML) - 1]) {
 				alertPhase.innerHTML = parseInt(alertPhase.innerHTML) + 1;
 				policeProbability = policeProbability * 1.5;
 				policeTrigger();
