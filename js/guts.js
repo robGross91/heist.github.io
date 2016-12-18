@@ -1,12 +1,29 @@
 window.onload = function()
 {
-    var globalClock = document.getElementById("clock");
+    	var globalClock = document.getElementById("clock");
 	var alert = document.getElementById("alert");
 	
-	var policeProbability = 20;
-	var civProbability = 10;
+	var policeProbability = 15;
+	var civProbability = 20;
 	
+	// these measure the last time a police or civ alert happened
+	var lastPolice = -1000;
+	var lastCiv = -1000;
+	
+	// cooldown clock for alerts
+	var policeCooldown = 5;
+	var civCooldown = 5;
+	
+	// check if game is currently paused
 	var pause = 0;
+	
+	// alertPhase affects frequency of police alerts
+	var alertPhase = document.getElementById("alertPhase");
+	// these three variables affect alertPhase timing
+	var alert2Time = 10;
+	var alert3Time = 20;
+	var alert4Time = 30;
+	var alertPhaseSwitches = [alert2Time, alert3Time, alert4Time];
 	
 	alert.style.visibility = "hidden";
 	
@@ -19,11 +36,23 @@ window.onload = function()
 			globalClock.innerHTML = parseInt(globalClock.innerHTML) + 1;
 			
 			// check if alert will occur:
-			var roll = Math.random() * 100;
+			var policeRoll = Math.random() * 100;
 			
-			if (roll < policeProbability) {
+			// check if alert phase is switching:
+			if (parseInt(globalClock.innerHTML) == alertPhaseSwitches[parseInt(alertPhase.innerHTML) - 1]) {
+				alertPhase.innerHTML = parseInt(alertPhase.innerHTML) + 1;
+				policeProbability = policeProbability * 1.5;
+				policeTrigger();
+			}
+			else if ((policeRoll < (policeProbability)) && (parseInt(globalClock.innerHTML) > (lastPolice + policeCooldown))) {
 				// police event triggered
 				policeTrigger();
+			}
+			else {
+				var civRoll = Math.random() * 100;
+				if ((civRoll < civProbability) && (parseInt(globalClock.innerHTML) > (lastCiv + civCooldown))) {
+					civTrigger();
+				}
 			}
 		}
 	}, tick);
@@ -32,6 +61,17 @@ window.onload = function()
 	function policeTrigger() {
 		alert.style.visibility = "visible";
 		alert.innerHTML = "POLICE!";
+		
+		lastPolice = parseInt(globalClock.innerHTML)
+		
+		pause = 1;
+	}
+	
+	function civTrigger() {
+		alert.style.visibility = "visible";
+		alert.innerHTML = "CIVILIAN!";
+		
+		lastCiv = parseInt(globalClock.innerHTML);
 		
 		pause = 1;
 	}
