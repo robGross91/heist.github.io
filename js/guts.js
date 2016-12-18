@@ -19,6 +19,14 @@ window.onload = function()
 	
 	// alertPhase affects frequency of police alerts
 	var alertPhase = document.getElementById("alertPhase");
+	
+	var policeSound = new Audio("./resources/police.wav");
+	var civSound = new Audio("./resources/civ.wav");
+	var alertSound = new Audio("./resources/alertUp.wav");
+	policeSound.volume = 0.7;
+	alertSound.volume = 0.4;
+	
+	
 	// these three variables affect alertPhase timing
 	var alert2Time = 10;
 	var alert3Time = 20;
@@ -40,6 +48,7 @@ window.onload = function()
 			
 			// check if alert phase is switching:
 			if (parseInt(globalClock.innerHTML) == alertPhaseSwitches[parseInt(alertPhase.innerHTML) - 1]) {
+				alertSound.play();
 				alertPhase.innerHTML = parseInt(alertPhase.innerHTML) + 1;
 				policeProbability = policeProbability * 1.5;
 				policeTrigger();
@@ -59,6 +68,7 @@ window.onload = function()
 	
 
 	function policeTrigger() {
+		policeSound.play();
 		alert.style.visibility = "visible";
 		alert.innerHTML = "POLICE!";
 		
@@ -68,6 +78,7 @@ window.onload = function()
 	}
 	
 	function civTrigger() {
+		civSound.play();
 		alert.style.visibility = "visible";
 		alert.innerHTML = "CIVILIAN!";
 		
